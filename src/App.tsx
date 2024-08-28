@@ -3,6 +3,7 @@ import Browse from './pages/Browse';
 import 'swiper/swiper-bundle.css';
 import SearchDetails from './pages/SearchDetails';
 import CategoryDetails from './pages/CategoryDetails';
+import RecipeDetails from './pages/RecipeDetails';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Browse />} />
         <Route path="/search" element={<SearchDetails />} />
+        <Route path="/recipe/:slug" element={<RecipeDetails />} />
         <Route path="/category/:slug" element={<CategoryDetails />} />
       </Routes>
     </Router>
