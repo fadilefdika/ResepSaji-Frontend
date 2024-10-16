@@ -19,7 +19,11 @@ const RecipeDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/recipe/${slug}`)
+      .get(`http://127.0.0.1:8000/api/recipe/${slug}`, {
+        headers: {
+          'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
+        },
+      })
       .then((response) => {
         setRecipe(response.data.data);
         setIsLoading(false);

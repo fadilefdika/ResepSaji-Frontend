@@ -29,7 +29,11 @@ const SearchDetails = () => {
     setError(null);
 
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/recipes/search?query=${query}`);
+      const response = await axios.get(`http://127.0.0.1:8000/api/recipes/search?query=${query}`, {
+        headers: {
+          'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
+        },
+      });
       setSearchResults(response.data.data);
     } catch (error) {
       setError('Error searching for recipes');

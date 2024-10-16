@@ -12,7 +12,11 @@ const BrowseFeaturedRecipesWrapper = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/recipes')
+      .get('http://127.0.0.1:8000/api/recipes', {
+        headers: {
+          'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
+        },
+      })
       .then((response) => {
         setRecipes(response.data.data);
         setIsLoading(false);
@@ -35,9 +39,7 @@ const BrowseFeaturedRecipesWrapper = () => {
     <section id="MadeByPeople">
       <div className="flex items-center justify-between px-5">
         <h2 className="font-bold">Made by People</h2>
-        <a href="#" className="font-semibold text-sm leading-[21px] text-[#FF4C1C]">
-          Explore All
-        </a>
+        <div className="font-semibold text-sm leading-[21px] text-[#FF4C1C]">Explore All</div>
       </div>
       <div className="swiper w-full mt-3">
         <Swiper className="w-full mt-3" direction="horizontal" spaceBetween={16} slidesPerView="auto" slidesOffsetBefore={20} slidesOffsetAfter={20}>

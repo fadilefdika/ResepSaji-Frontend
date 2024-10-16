@@ -4,7 +4,7 @@ const FeaturedRecipeCard = ({ recipe }: FeaturedRecipeCardProps) => {
   const baseUrl = 'http://127.0.0.1:8000/storage/';
 
   return (
-    <a href="details.html" className="card">
+    <div className="card">
       <div className="relative w-[200px] h-[280px] rounded-[30px] bg-white overflow-hidden">
         <img src={`${baseUrl}${recipe.thumbnail}`} className="absolute w-full h-full object-cover" alt="thumbnails" />
         <div className="gradient-filter absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0)40.47%,#000000_81.6%)] z-10" />
@@ -19,7 +19,7 @@ const FeaturedRecipeCard = ({ recipe }: FeaturedRecipeCardProps) => {
           </div>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
 

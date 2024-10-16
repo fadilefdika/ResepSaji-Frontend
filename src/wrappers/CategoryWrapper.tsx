@@ -12,7 +12,11 @@ const CategoryWrapper = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/categories')
+      .get('http://127.0.0.1:8000/api/recipes', {
+        headers: {
+          'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
+        },
+      })
       .then((response) => {
         setCategories(response.data.data);
         setIsLoading(false);
