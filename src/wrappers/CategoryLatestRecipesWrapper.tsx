@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import RecipeCardResult from '../components/RecipeCardResult';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -40,7 +40,17 @@ const CategoryLatestRecipesWrapper = () => {
       <div className="flex items-center justify-between">
         <h2 className="font-bold">Latest Recipes</h2>
       </div>
-      <div className="flex flex-col gap-[18px] mt-[18px]">{category.recipes.length > 0 ? category.recipes.map((recipe) => <RecipeCardResult key={recipe.id} recipe={recipe} />) : <p>Belum ada resep</p>}</div>
+      <div className="flex flex-col gap-[18px] mt-[18px]">
+        {category.recipes.length > 0 ? (
+          category.recipes.map((recipe) => (
+            <Link key={recipe.id} to={`/recipe/${recipe.slug}`}>
+              <RecipeCardResult recipe={recipe} />
+            </Link>
+          ))
+        ) : (
+          <p>Belum ada resep</p>
+        )}
+      </div>
     </section>
   );
 };

@@ -1,4 +1,4 @@
-const IngredientCars = () => {
+const IngredientCards = () => {
   return (
     <div className="flex flex-col items-center text-center w-full rounded-[20px] p-[14px] gap-[14px] bg-white shadow-[0_12px_30px_0_#D6D6D680]">
       <div className="thumbnail flex shrink-0 w-full aspect-[138.5/100] rounded-[20px] bg-[#D9D9D9] overflow-hidden">
@@ -12,4 +12,4 @@ const IngredientCars = () => {
   );
 };
 
-export default IngredientCars;
+export default IngredientCards;

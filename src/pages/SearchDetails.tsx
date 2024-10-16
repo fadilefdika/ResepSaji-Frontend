@@ -48,15 +48,10 @@ const SearchDetails = () => {
     <>
       <nav className="flex items-center justify-between px-5 mt-[30px]">
         <Link to={'/'}>
-          <a className="flex shrink-0">
+          <div className="flex shrink-0">
             <img src="assets/images/logos/logo.svg" alt="logo" />
-          </a>
-        </Link>
-        <a href="#">
-          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_10px_20px_0_#D6D6D6AB] transition-all duration-300 hover:shadow-[0_10px_20px_0_#FF4C1C80]">
-            <img src="assets/images/icons/notification.svg" className="w-5 h-5 object-contain" alt="icon" />
           </div>
-        </a>
+        </Link>
       </nav>
       <div className="px-5 mt-[30px]">
         {loading && <p>Loading...</p>}
@@ -81,7 +76,17 @@ const SearchDetails = () => {
         <div className="flex items-center justify-between">
           <h2 className="font-bold">Search Results</h2>
         </div>
-        <div className="flex flex-col gap-[18px] mt-[18px]">{searchResults.length > 0 ? searchResults.map((recipe) => <RecipeCardResult key={recipe.id} recipe={recipe} />) : <p>Belum ada datanya...</p>}</div>
+        <div className="flex flex-col gap-[18px] mt-[18px]">
+          {searchResults.length > 0 ? (
+            searchResults.map((recipe) => (
+              <Link to={`/recipe/${recipe.slug}`} key={recipe.id}>
+                <RecipeCardResult recipe={recipe} />
+              </Link>
+            ))
+          ) : (
+            <p>Belum ada datanya...</p>
+          )}
+        </div>
       </section>
     </>
   );

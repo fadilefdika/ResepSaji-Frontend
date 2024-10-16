@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import IngredientCars from '../components/IngredientCard';
+import IngredientCards from '../components/IngredientCard';
+import { Link, useParams } from 'react-router-dom';
+import { Recipe } from '../types/type';
+import axios from 'axios';
 
 const RecipeDetails = () => {
   const [activeTab, setActiveTab] = useState('ingredients');
@@ -9,14 +12,46 @@ const RecipeDetails = () => {
     setActiveTab(tab);
   };
 
+  const { slug } = useParams<{ slug: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8000/api/recipe/${slug}`)
+      .then((response) => {
+        setRecipe(response.data.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsError(error);
+        setIsLoading(false);
+      });
+  }, [slug]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error loading : {isError}</p>;
+  }
+
+  if (!recipe) {
+    return <p>Recipe not found</p>;
+  }
+
+  const baseurl = 'http://127.0.0.1:8000/storage';
+
   return (
     <>
       <nav className="absolute top-0 flex w-full max-w-[640px] items-center justify-between px-5 mt-[30px] z-20">
-        <a href="index.html">
+        <Link to={'/'}>
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20">
             <img src="/assets/images/icons/arrow-left.svg" className="w-5 h-5 object-contain" alt="icon" />
           </div>
-        </a>
+        </Link>
         <button className="appearance-none">
           <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20">
             <img src="/assets/images/icons/heart.svg" className="w-5 h-5 object-contain" alt="icon" />
@@ -30,31 +65,31 @@ const RecipeDetails = () => {
               <SwiperSlide className="swiper-slide">
                 <div className="relative w-full h-full flex shrink-0">
                   <div className="gradient-filter absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0)40.47%,#000000_81.6%)] z-10" />
-                  <img src="/assets/images/thumbnails/thumbnail-2.png" className="w-full h-full object-cover" alt="thumbnail" />
+                  <img src={`${baseurl}/${recipe.thumbnail}`} className="w-full h-full object-cover" alt="thumbnail" />
                 </div>
               </SwiperSlide>
-              <SwiperSlide className="swiper-slide">
-                <div className="relative w-full h-full flex shrink-0">
-                  <div className="gradient-filter absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0)40.47%,#000000_81.6%)] z-10" />
-                  <img src="/assets/images/thumbnails/thumbnail-1.png" className="w-full h-full object-cover" alt="thumbnail" />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="swiper-slide">
-                <div className="relative w-full h-full flex shrink-0">
-                  <div className="gradient-filter absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0)40.47%,#000000_81.6%)] z-10" />
-                  <img src="/assets/images/thumbnails/thumbnail-3.png" className="w-full h-full object-cover" alt="thumbnail" />
-                </div>
-              </SwiperSlide>
+              {recipe.photos.map((photo) => {
+                console.log('ini foto untuk recipe' + `${baseurl}/${photo.photo}`); // Pindahkan console.log ke dalam map function
+                return (
+                  <SwiperSlide className="swiper-slide" key={photo.id}>
+                    <div className="relative w-full h-full flex shrink-0">
+                      <div className="gradient-filter absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0)40.47%,#000000_81.6%)] z-10" />
+                      <img src={`${baseurl}/${photo.photo}`} className="w-full h-full object-cover" alt="thumbnail" />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </div>
         </div>
+
         <div className="absolute bottom-0 w-full flex flex-col gap-5 z-20">
           {/* If we need pagination */}
           <div className="swiper-pagination !-top-5 *:!bg-white" />
           <div className="flex justify-between p-5 pb-[23px] gap-3">
             <div className="flex flex-col gap-[6px]">
-              <p className="font-semibold text-[#FF4C1C]">Top Bakery</p>
-              <h1 className="font-bold text-[34px] leading-[46px] text-white">Burger Tebal Makin Hot</h1>
+              <p className="font-semibold text-[#FF4C1C]">Top {recipe.category.name}</p>
+              <h1 className="font-bold text-[34px] leading-[46px] text-white">{recipe.name}</h1>
             </div>
             <div className="flex shrink-0 items-center w-fit h-fit rounded-full py-1 px-2 bg-white/20 backdrop-blur">
               <img src="/assets/images/icons/Star 1.svg" className="w-4 h-4" alt="star" />
@@ -66,15 +101,15 @@ const RecipeDetails = () => {
       <section id="Description" className="flex flex-col gap-4 px-5 mt-[30px]">
         <div className="flex flex-col gap-2">
           <h2 className="font-bold">About</h2>
-          <p className="leading-8">Burger tebal asal kota inkopad ini sangat membuat lapar dan sehat untuk tubuh kita terutama ketika sedang bulking pada masa otot terbaru setelah olahraga.</p>
+          <p className="leading-8">{recipe.about}</p>
         </div>
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="flex shrink-0 w-[50px] h-[50px] rounded-full overflow-hidden">
-              <img src="/assets/images/photos/photo-1.png" className="w-full h-full object-cover" alt="avatar" />
+              <img src={`${baseurl}/${recipe.author.photo}`} className="w-full h-full object-cover" alt="avatar" />
             </div>
             <div className="flex flex-col gap-[2px]">
-              <p className="font-semibold">Shayna</p>
+              <p className="font-semibold">{recipe.author.name}</p>
               <p className="text-sm leading-[21px] text-[#848486]">Author</p>
             </div>
           </div>
@@ -147,60 +182,40 @@ const RecipeDetails = () => {
           {activeTab === 'ingredients' && (
             <div className=" px-5" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
               <div className="grid grid-cols-2 gap-5">
-                <IngredientCars />
+                {recipe.recipe_ingredients.map((recipeIngredients) => (
+                  <div key={recipeIngredients.id} className="flex flex-col items-center text-center w-full rounded-[20px] p-[14px] gap-[14px] bg-white shadow-[0_12px_30px_0_#D6D6D680]">
+                    <div className="thumbnail flex shrink-0 w-full aspect-[138.5/100] rounded-[20px] bg-[#D9D9D9] overflow-hidden">
+                      <img src={`${baseurl}/${recipeIngredients.ingredient.photo}`} className="w-full h-full object-cover" alt="thumbnails" />
+                    </div>
+                    <div className="flex flex-col gap-[2px]">
+                      <p className="font-semibold">{recipeIngredients.ingredient.name}</p>
+                      <p className="text-sm leading-[21px] text-[#848486]">1 kilogram</p>
+                    </div>
+                  </div>
+                ))}
+                ;
               </div>
             </div>
           )}
           {activeTab === 'tutorials' && (
             <div className=" px-5" id="tutorials" role="tabpanel" aria-labelledby="tutorials-tab">
-              <iframe className="w-full aspect-video rounded-[20px] bg-[#D9D9D9]" src="https://www.youtube.com/embed/n1YeqIlbkxc" />
+              <iframe className="w-full aspect-video rounded-[20px] bg-[#D9D9D9]" src={`https://www.youtube.com/embed/${recipe.url_video}`} />
               <div className="list-items-container flex flex-col mt-[26px]">
-                <div className="list flex gap-[14px]">
-                  <div className="flex relative">
-                    <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
-                      <span>1</span>
+                {recipe.tutorials.length > 0 ? (
+                  recipe.tutorials.map((tutorial, index) => (
+                    <div className="list flex gap-[14px]" key={index}>
+                      <div className="flex relative">
+                        <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
+                          <span>{index + 1}</span>
+                        </div>
+                        <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
+                      </div>
+                      <p className="leading-8 pb-[30px]">{tutorial.name}</p>
                     </div>
-                    {/* the last .line will be hidden by CSS */}
-                    <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
-                  </div>
-                  <p className="leading-8 pb-[30px]">Siapkan telur rebus dicampur dengan mentega rendah kalori</p>
-                </div>
-                <div className="list flex gap-[14px]">
-                  <div className="flex relative">
-                    <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
-                      <span>2</span>
-                    </div>
-                    <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
-                  </div>
-                  <p className="leading-8 pb-[30px]">Panaskan minyak dengan api stabil agar tidak gosong nanti dagingnya</p>
-                </div>
-                <div className="list flex gap-[14px]">
-                  <div className="flex relative">
-                    <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
-                      <span>3</span>
-                    </div>
-                    <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
-                  </div>
-                  <p className="leading-8 pb-[30px]">Roti disajikan tanpa wijen agar rasanya tidak bertabrakan salada</p>
-                </div>
-                <div className="list flex gap-[14px]">
-                  <div className="flex relative">
-                    <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
-                      <span>4</span>
-                    </div>
-                    <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
-                  </div>
-                  <p className="leading-8 pb-[30px]">Grill daging sapi dengan keadaan frozen dan berikan sea salts</p>
-                </div>
-                <div className="list flex gap-[14px]">
-                  <div className="flex relative">
-                    <div className="relative z-10 flex shrink-0 items-center justify-center w-10 h-10 rounded-full bg-white shadow-[0_12px_30px_0_#D6D6D680] font-bold text-sm leading-[21px]">
-                      <span>5</span>
-                    </div>
-                    <div className="line absolute left-1/2 transform -translate-x-1/2 h-full border-dashed border border-[#DEDFEB]" />
-                  </div>
-                  <p className="leading-8 pb-[30px]">Gabungkan satu per satu ketika masih panas jadi lebih melekat</p>
-                </div>
+                  ))
+                ) : (
+                  <div>Tidak ada Tutorial</div>
+                )}
               </div>
             </div>
           )}
@@ -281,7 +296,9 @@ const RecipeDetails = () => {
             <img src="/assets/images/icons/note-favorite-fill-black.svg" className="w-8 h-8" alt="icon" />
             <p>Offline-access is available now</p>
           </div>
-          <button className="py-3 px-5 rounded-full font-semibold text-white text-nowrap transition-all duration-300 shadow-[0_10px_20px_0_#FF4C1C80] bg-[#FF4C1C]">Download Now</button>
+          <a target="_blank" href={`${baseurl}/${recipe.url_file}`} className="py-3 px-5 rounded-full font-semibold text-white text-nowrap transition-all duration-300 shadow-[0_10px_20px_0_#FF4C1C80] bg-[#FF4C1C]">
+            Download Now
+          </a>
         </div>
       </div>
     </>
