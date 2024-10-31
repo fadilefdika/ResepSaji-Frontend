@@ -4,6 +4,7 @@ import IngredientCards from '../components/IngredientCard';
 import { Link, useParams } from 'react-router-dom';
 import { Recipe } from '../types/type';
 import axios from 'axios';
+import LoadingSpinner from '../components/Loading';
 
 const RecipeDetails = () => {
   const [activeTab, setActiveTab] = useState('ingredients');
@@ -35,7 +36,7 @@ const RecipeDetails = () => {
   }, [slug]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

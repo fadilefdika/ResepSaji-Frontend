@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Category } from '../types/type';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../components/Loading';
 
 const CategoryWrapper = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -12,7 +13,7 @@ const CategoryWrapper = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/recipes', {
+      .get('http://127.0.0.1:8000/api/categories', {
         headers: {
           'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
         },
@@ -28,7 +29,7 @@ const CategoryWrapper = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

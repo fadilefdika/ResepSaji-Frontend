@@ -3,6 +3,7 @@ import RecipeCardResult from '../components/RecipeCardResult';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Category } from '../types/type';
+import LoadingSpinner from '../components/Loading';
 
 const CategoryLatestRecipesWrapper = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -28,7 +29,7 @@ const CategoryLatestRecipesWrapper = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

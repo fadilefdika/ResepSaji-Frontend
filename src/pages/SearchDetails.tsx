@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Recipe } from '../types/type';
 import axios from 'axios';
 import RecipeCardResult from '../components/RecipeCardResult';
+import LoadingSpinner from '../components/Loading';
 
 const SearchDetails = () => {
   const location = useLocation();
@@ -58,7 +59,7 @@ const SearchDetails = () => {
         </Link>
       </nav>
       <div className="px-5 mt-[30px]">
-        {loading && <p>Loading...</p>}
+        {loading && <LoadingSpinner />}
         {error && <p>{error}</p>}
         <div className="flex items-center rounded-full p-[5px_14px] pr-[5px] gap-[10px] bg-white shadow-[0_12px_30px_0_#D6D6D652] transition-all duration-300 focus-within:ring-1 focus-within:ring-[#FF4C1C]">
           <img src="assets/images/icons/note-favorite.svg" className="w-6 h-6" alt="icon" />

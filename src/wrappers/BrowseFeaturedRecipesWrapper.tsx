@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Recipe } from '../types/type';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../components/Loading';
 
 const BrowseFeaturedRecipesWrapper = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -28,7 +29,7 @@ const BrowseFeaturedRecipesWrapper = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -42,15 +43,21 @@ const BrowseFeaturedRecipesWrapper = () => {
         <div className="font-semibold text-sm leading-[21px] text-[#FF4C1C]">Explore All</div>
       </div>
       <div className="swiper w-full mt-3">
-        <Swiper className="w-full mt-3" direction="horizontal" spaceBetween={16} slidesPerView="auto" slidesOffsetBefore={20} slidesOffsetAfter={20}>
-          {recipes.map((recipe) => (
-            <SwiperSlide key={recipe.id} className="swiper-slide !w-fit">
-              <Link to={`recipe/${recipe.slug}`}>
-                <FeaturedRecipeCard recipe={recipe} />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {recipes.length === 0 ? (
+          <div className="text-center mt-5">
+            <p>Belum ada resep untuk sekarang</p>
+          </div>
+        ) : (
+          <Swiper className="w-full mt-3" direction="horizontal" spaceBetween={16} slidesPerView="auto" slidesOffsetBefore={20} slidesOffsetAfter={20}>
+            {recipes.map((recipe) => (
+              <SwiperSlide key={recipe.id} className="swiper-slide !w-fit">
+                <Link to={`recipe/${recipe.slug}`}>
+                  <FeaturedRecipeCard recipe={recipe} />
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );

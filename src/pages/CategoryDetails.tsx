@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Category } from '../types/type';
 import axios from 'axios';
 import CategoryLatestRecipesWrapper from '../wrappers/CategoryLatestRecipesWrapper';
+import LoadingSpinner from '../components/Loading';
 
 const CategoryDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,7 +30,7 @@ const CategoryDetails = () => {
   }, [slug]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

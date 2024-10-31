@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Category } from '../types/type';
 import { Link, useParams } from 'react-router-dom';
+import LoadingSpinner from '../components/Loading';
 
 const CategoryFeaturedRecipesWrapper = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,7 +30,7 @@ const CategoryFeaturedRecipesWrapper = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
