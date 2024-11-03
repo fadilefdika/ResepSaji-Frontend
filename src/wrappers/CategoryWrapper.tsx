@@ -36,6 +36,8 @@ const CategoryWrapper = () => {
     return <p>Error</p>;
   }
 
+  categories.map((category) => console.log(category.slug));
+
   return (
     <section id="Categories" className="mt-[30px]">
       <div className="flex items-center justify-between px-5">

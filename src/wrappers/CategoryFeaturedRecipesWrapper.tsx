@@ -14,31 +14,32 @@ const CategoryFeaturedRecipesWrapper = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/recipes', {
+      .get(`http://127.0.0.1:8000/api/category/${slug}`, {
         headers: {
           'X-API-KEY': import.meta.env.VITE_API_BASE_URL,
         },
       })
       .then((response) => {
+        console.log('ini respon', response.data.data);
         setCategory(response.data.data);
         setIsLoading(false);
       })
       .catch((error) => {
-        setIsError(error);
+        setIsError(error.message || 'An error occurred');
         setIsLoading(false);
       });
-  }, []);
+  }, [slug]);
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   if (isError) {
-    return <p>Error</p>;
+    return <p>Error: {isError}</p>;
   }
 
-  if (!category) {
-    return <p>Category not found</p>;
+  if (!category || !category.recipes) {
+    return <p>Category not found or no recipes available</p>;
   }
 
   return (
