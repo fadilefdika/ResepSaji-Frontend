@@ -1,50 +1,37 @@
-# React + TypeScript + Vite
+<p align="center"><a href="https://reactjs.org" target="_blank"><img src="https://reactjs.org/logo-og.png" width="400" alt="React Logo"></a></p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# ResepSaji FrontEnd
 
-Currently, two official plugins are available:
+**ResepSaji FrontEnd** is the frontend component of a web application designed to showcase a variety of home-cooked recipes. This application serves as a user-friendly interface for individuals looking to explore, discover, and enjoy recipes from the comfort of their homes. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- **User Roles**: The application supports two primary user roles:
+  - **Admin**: Administrators have the capability to manage recipes, including adding, editing, and deleting recipes, ensuring the content remains fresh and relevant.
+  - **User**: Regular users can browse the extensive collection of home-cooked recipes, save their favorites, and explore new dishes based on various categories.
+  
+- **Interactive UI**: Built with a focus on user experience, the application features an intuitive layout and seamless navigation, allowing users to find their desired recipes quickly.
 
-## Expanding the ESLint configuration
+- **Responsive Design**: Utilizing [Tailwind CSS](https://tailwindcss.com/), the frontend is designed to be fully responsive, providing an optimal viewing experience on devices of all sizes, from mobile phones to desktop computers.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technologies Used
+- **Frontend Framework**: Developed using [React.js](https://reactjs.org/), a powerful JavaScript library for building user interfaces, allowing for component-based architecture and efficient rendering.
+- **TypeScript**: The project incorporates [TypeScript](https://www.typescriptlang.org/), enhancing JavaScript by adding static type definitions, which helps catch errors early in the development process and improves code quality.
+- **Styling**: Styled with [Tailwind CSS](https://tailwindcss.com/), a utility-first CSS framework that facilitates rapid UI development with minimal custom CSS.
 
-- Configure the top-level `parserOptions` property like this:
+## Project Background
+This project was initiated after completing a comprehensive course from BWA, which provided valuable insights and skills in modern web development practices. The course focused on best practices for building responsive and maintainable applications, all of which have been applied in the creation of ResepSaji FrontEnd.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Installation
+To set up the project locally, follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/resepsaji-frontend.git
+   cd resepsaji-frontend
+2. Install the necessary dependencies:
+   ```bash
+   npm install
+3. Start the development server:
+   ```bash
+   npm start
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+  
